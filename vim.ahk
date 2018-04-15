@@ -945,6 +945,9 @@ VimMove(key="", shift=0){
     Send, {Shift Up}{End}{Home}{Shift Down}{Up}
     VimSetMode("Vim_VisualLine")
   }
+  if(VimMode == "Vim_VisualLineFirst") and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
+    VimSetMode("Vim_VisualLine")
+  }
   if(InStr(VimMode, "Vim_ydc")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
     VimLineCopy := 1
     Send,{Shift Up}{Home}{Down}{Shift Down}{Up}
