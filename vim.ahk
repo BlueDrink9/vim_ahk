@@ -597,12 +597,7 @@ Return
 ; }}}
 
 ; Enter vim normal mode {{{
-Esc:: ; Just send Esc at converting, long press for normal Esc.
-  KeyWait, Esc, T0.5
-  if (ErrorLevel){ ; long press
-    Send,{Esc}
-    Return
-  }
+~Esc:: ; Enter normal mode and pass Esc through to application
   VimLastIME := VIM_IME_Get()
   if(VimLastIME){
     if(VIM_IME_GetConverting(A)){
@@ -617,11 +612,6 @@ Esc:: ; Just send Esc at converting, long press for normal Esc.
 Return
 
 ^[:: ; Go to Normal mode (for vim) with IME off even at converting.
-  KeyWait, [, T0.5
-  if(ErrorLevel){ ; long press to Esc
-    Send, {Esc}
-    Return
-  }
   VimLastIME:=VIM_IME_Get()
   if(VimLastIME){
     if(VIM_IME_GetConverting(A)){
@@ -976,9 +966,9 @@ VimMove(key="", shift=0){
     Send, {Up 10}
   }else if(key == "^d"){
     Send, {Down 10}
-  }else if(key == "^b"){
+  }else if(key == "^b" or key == "PgUp"){
     Send, {PgUp}
-  }else if(key == "^f"){
+  }else if(key == "^f" or key == "PgDn"){
     Send, {PgDn}
   }else if(key == "g"){
     Send, ^{Home}
@@ -1043,6 +1033,8 @@ b::VimMoveLoop("b")
 ^d::VimMoveLoop("^d")
 ^b::VimMoveLoop("^b")
 ^f::VimMoveLoop("^f")
+PgDn::VimMoveLoop("PgDn")
+PgUp::VimMoveLoop("PgUp")
 ; G
 +g::VimMove("+g")
 ; gg
@@ -1252,6 +1244,14 @@ c::
   }else{
     VimSetMode("Insert", 0, 0, 0)
   }
+Return
+
+; MS Office lets you interact with "the ribbon" (toolbar) via keyboard by 
+; pressing and releaseing the Alt key, then pressing additional shortcut keys
+; that appear on the ribbon.
+$Alt::
+    Send {Alt}
+    VimSetMode("Insert")
 Return
 
 *::
