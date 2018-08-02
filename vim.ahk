@@ -997,8 +997,8 @@ VimMove(key="", shift=0){
   }else if(key == "g"){
     Send, ^{Home}
   }else if(key == "+g"){
-    ;Send, ^{End}{Home}
-    Send, ^{End}
+    Send, ^{End}{Home}
+    ; Send, ^{End}
   }
   Send,{Shift Up}
 
