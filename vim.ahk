@@ -975,13 +975,13 @@ VimMove(key="", shift=0){
   if(key == "j"){
     ; Only for OneNote of less than windows 10?
     if WinActive("ahk_group VimOneNoteGroup"){
-      Send ^{Down}
+      run %A_ScriptDir%\sendDown.exe
     } else {
       Send,{Down}
     }
   }else if(key="k"){
     if WinActive("ahk_group VimOneNoteGroup"){
-      Send ^{Up}
+      run %A_ScriptDir%\sendUp.exe
     }else{
       Send,{Up}
     }
