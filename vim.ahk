@@ -73,6 +73,16 @@ VimJJIni := 0
 if VimJJ is not integer
   VimJJ := VimJJIni
 VimJJ_TT := "Asign jj to enter Normal mode"
+; Set 1 to asign jk to enter Normal mode
+VimJKIni := 0
+if VimJK is not integer
+  VimJK := VimJKIni
+VimJK_TT := "Asign jk to enter Normal mode"
+; Set 1 to asign kv to enter Normal mode
+VimKVIni := 1
+if VimKV is not integer
+  VimKV := VimKVIni
+VimKV_TT := "Asign kv to enter Normal mode"
 
 ; Set 1 to enable Tray Icon for Vim Modes`nSet 0 for original Icon
 VimIconIni := 1
@@ -208,6 +218,14 @@ MenuVimSettings:
   if(VimJJ == 1){
     GuiControl, VimGuiSettings:, VimJJ, 1
   }
+  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimKV, KV to enter Normal mode
+  if(VimKV == 1){
+    GuiControl, VimGuiSettings:, VimKV, 1
+  }
+  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimJK, JK to enter Normal mode
+  if(VimJK == 1){
+    GuiControl, VimGuiSettings:, VimJK, 1
+  }
   Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimIcon, Enable tray icon
   if(VimIcon == 1){
     GuiControl, VimGuiSettings:, VimIcon, 1
@@ -309,6 +327,8 @@ VimGuiSettingsReset:
   VimDisableUnused := VimDisableUnusedIni
   VimRestoreIME := VimRestoreIMEIni
   VimJJ := VimJJIni
+  VimJK := VimJKIni
+  VimKV := VimKVIni
   VimIcon := VimIconIni
   VimIconCheck := VimIconCheckIni
   VimIconCheckInterval := VimIconCheckIntervalIni
@@ -547,6 +567,8 @@ VimReadIni(){
   IniRead, VimDisableUnused, %VimIni%, %VimSection%, VimDisableUnused, %VimDisableUnused%
   IniRead, VimRestoreIME, %VimIni%, %VimSection%, VimRestoreIME, %VimRestoreIME%
   IniRead, VimJJ, %VimIni%, %VimSection%, VimJJ, %VimJJ%
+  IniRead, VimKV, %VimIni%, %VimSection%, VimKV, %VimKV%
+  IniRead, VimJK, %VimIni%, %VimSection%, VimJK, %VimJK%
   IniRead, VimIcon, %VimIni%, %VimSection%, VimIcon, %VimIcon%
   IniRead, VimIconCheck, %VimIni%, %VimSection%, VimIconCheck, %VimIconCheck%
   IniRead, VimIconCheckInterval, %VimIni%, %VimSection%, VimIconCheckInterval, %VimIconCheckInterval%
@@ -574,6 +596,8 @@ VimWriteIni(){
   IniWrite, % VimDisableUnused, % VimIni, % VimSection, VimDisableUnused
   IniWrite, % VimRestoreIME, % VimIni, % VimSection, VimRestoreIME
   IniWrite, % VimJJ, % VimIni, % VimSection, VimJJ
+  IniWrite, % VimJK, % VimIni, % VimSection, VimJK
+  IniWrite, % VimKV, % VimIni, % VimSection, VimKV
   IniWrite, % VimIcon, % VimIni, % VimSection, VimIcon
   IniWrite, % VimIconCheck, % VimIni, % VimSection, VimIconCheck
   IniWrite, % VimIconCheckInterval, % VimIni, % VimSection, VimIconCheckInterval
@@ -660,6 +684,24 @@ Return
   }
 Return
 
+#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimJK == 1)
+~k up:: ; jk: go to Normal mode.
+  Input, jout, I T0.1 V L1, j
+  if(ErrorLevel == "EndKey:J"){
+    SendInput, {BackSpace 2}
+    VimSetMode("Vim_Normal")
+  }
+
+#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimKV == 1)
+~v up:: ; kv: go to Normal mode.
+  Input, jout, I T0.1 V L1, j
+  if(ErrorLevel == "EndKey:k"){
+    SendInput, {BackSpace 2}
+    VimSetMode("Vim_Normal")
+  }
+Return
+
+Return
 #If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimJJ == 1)
 ~j up:: ; jj: go to Normal mode.
   Input, jout, I T0.1 V L1, j
