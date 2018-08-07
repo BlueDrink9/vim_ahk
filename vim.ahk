@@ -97,6 +97,14 @@ Return
 #If WinActive("ahk_group " . VimGroupName) && (VimMode == "Vim_Normal")
 i::VimSetMode("Insert")
 
+; MS Office lets you interact with "the ribbon" (toolbar) via keyboard by 
+; pressing and releaseing the Alt key, then pressing additional shortcut keys
+; that appear on the ribbon.
+$Alt::
+    Send {Alt}
+    VimSetMode("Insert")
+Return
+
 +i::
   Send, {Home}
   Sleep, 200
@@ -385,6 +393,9 @@ VimMove(key="", shift=0){
     Send, {Shift Up}{End}{Home}{Shift Down}{Up}
     VimSetMode("Vim_VisualLine")
   }
+  if(VimMode == "Vim_VisualLineFirst") and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
+    VimSetMode("Vim_VisualLine")
+  }
   if(InStr(VimMode, "Vim_ydc")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
     VimLineCopy := 1
     Send,{Shift Up}{Home}{Down}{Shift Down}{Up}
@@ -413,9 +424,9 @@ VimMove(key="", shift=0){
     Send, {Up 10}
   }else if(key == "^d"){
     Send, {Down 10}
-  }else if(key == "^b"){
+  }else if(key == "^b" or key == "PgUp"){
     Send, {PgUp}
-  }else if(key == "^f"){
+  }else if(key == "^f" or key == "PgDn"){
     Send, {PgDn}
   }else if(key == "g"){
     Send, ^{Home}
@@ -480,6 +491,8 @@ b::VimMoveLoop("b")
 ^d::VimMoveLoop("^d")
 ^b::VimMoveLoop("^b")
 ^f::VimMoveLoop("^f")
+PgDn::VimMoveLoop("PgDn")
+PgUp::VimMoveLoop("PgUp")
 ; G
 +g::VimMove("+g")
 ; gg
@@ -689,6 +702,14 @@ c::
   }else{
     VimSetMode("Insert", 0, 0, 0)
   }
+Return
+
+; MS Office lets you interact with "the ribbon" (toolbar) via keyboard by 
+; pressing and releaseing the Alt key, then pressing additional shortcut keys
+; that appear on the ribbon.
+$Alt::
+    Send {Alt}
+    VimSetMode("Insert")
 Return
 
 *::
