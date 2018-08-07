@@ -59,7 +59,7 @@ GroupAdd, VimOneNoteGroup, ahk_exe onenote.exe ; OneNote Desktop
 GroupAdd, VimDoubleHomeGroup, ahk_exe Code.exe ; Visual Studio Code
 ; }}}
 
-; Setting variables
+; Setting variables {{{
 ; First check if they are already set (in mother script).
 ; Second read settings if it exits.
 
@@ -158,6 +158,8 @@ VimLastIME := 0
 
 VimCurrControl := ""
 VimPrevControl := ""
+
+; }}}
 
 ; Menu
 ;Menu, VimSubMenu, Add, Vim Check, MenuVimCheck
@@ -406,6 +408,7 @@ Return
                   ; Use ~500kB memory?
 #HotkeyInterval 2000 ; Hotkey inteval (default 2000 milliseconds).
 #MaxHotkeysPerInterval 70 ; Max hotkeys per interval (default 50).
+#SingleInstance force ; Automatically reload script when run, don't ask about duplicates.
 ;}}}
 
 ; IME {{{
@@ -1658,3 +1661,4 @@ Return
 
 ; vim: foldmethod=marker
 ; vim: foldmarker={{{,}}}
+; vim: ts=2:sw=2:sts=2:et
