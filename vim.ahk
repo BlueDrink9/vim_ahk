@@ -86,7 +86,6 @@ Return
   }else{
     goNorm := False
   }
-  tooltip, %goNorm%
   if goNorm {
     SendInput, {BackSpace 2}
     VimSetMode("Vim_Normal")

@@ -1,14 +1,15 @@
 ; AutohHotkey settings {{{
 
-#Warn ; Provides code warnings when running
+; #Warn ; Provides code warnings when running
 ; #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 #UseHook On ; Make it a bit slow, but can avoid infinitude loop
             ; Same as "$" for each hotkey
 #InstallKeybdHook ; For checking key history
                   ; Use ~500kB memory?
+; Prevent infinite loop of self-triggering keys (warns if more than 35/second)
 #HotkeyInterval 2000 ; Hotkey inteval (default 2000 milliseconds).
-#MaxHotkeysPerInterval 70 ; Max hotkeys per interval (default 50).
+#MaxHotkeysPerInterval 70 ; Max hotkeys per interval (default 70).
 #SingleInstance force ; Automatically reload script when run, don't ask about duplicates.
 ;}}}
 
