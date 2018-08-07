@@ -653,17 +653,7 @@ Esc:: ; Just send Esc at converting, long press for normal Esc.
     Send,{Esc}
     Return
   }
-  VimLastIME := VIM_IME_Get()
-  if(VimLastIME){
-    if(VIM_IME_GetConverting(A)){
-      Send,{Esc}
-    }else{
-      VIM_IME_SET()
-      VimSetMode("Vim_Normal")
-    }
-  }else{
-    VimSetMode("Vim_Normal")
-  }
+  checkIMENormal()
 Return
 
 ^[:: ; Go to Normal mode (for vim) with IME off even at converting.
@@ -672,6 +662,10 @@ Return
     Send, {Esc}
     Return
   }
+  checkIMENormal()
+Return
+
+checkIMENormal(){
   VimLastIME:=VIM_IME_Get()
   if(VimLastIME){
     if(VIM_IME_GetConverting(A)){
