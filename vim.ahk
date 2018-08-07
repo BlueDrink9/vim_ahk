@@ -31,6 +31,7 @@ VimGroup_TT := "Set one application per line.`n`nIt can be any of Window Title, 
 VimGroupText_TT := VimGroup_TT
 VimGroupIni :=                             "ahk_exe notepad.exe"   ; NotePad
 VimGroupIni := VimGroupIni . VimGroupDel . "ahk_exe wordpad.exe"   ; WordPad
+VimGroupIni := VimGroupIni . VimGroupDel . "ahk_exe notepad++.exe" ; notepad++
 VimGroupIni := VimGroupIni . VimGroupDel . "ahk_exe TeraPad.exe"   ; TeraPad
 VimGroupIni := VimGroupIni . VimGroupDel . "ahk_exe explorer.exe"  ; Explorer
 VimGroupIni := VimGroupIni . VimGroupDel . "作成"                  ;Thunderbird, 日本語

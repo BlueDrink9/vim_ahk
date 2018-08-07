@@ -27,6 +27,7 @@ The default setting enables vim-mode for the following applications:
 
 * Notepad (メモ帳)
 * Wordpad
+* Notepad++
 * TeraPad
 * Windows Explorer
 * Thunderbird (only sending window)
