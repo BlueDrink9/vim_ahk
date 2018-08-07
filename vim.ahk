@@ -85,6 +85,13 @@ if VimKV is not integer
   VimKV := VimKVIni
 VimKV_TT := "Asign kv to enter Normal mode"
 
+; Set 1 to make holding esc enter normal mode and single press send through esc
+VimLongEscNormalIni := 0
+if VimLongEscNormal is not integer
+  VimLongEscNormal := VimLongEscNormalIni
+VimLongEscNormal_TT := "Hold esc to enter normal, single press to send esc to window"
+
+
 ; Set 1 to enable Tray Icon for Vim Modes`nSet 0 for original Icon
 VimIconIni := 1
 if VimIcon is not integer
@@ -227,6 +234,10 @@ MenuVimSettings:
   if(VimJK == 1){
     GuiControl, VimGuiSettings:, VimJK, 1
   }
+  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimLongEscNormal, Long press esc to enter normal mode
+  if(VimLongEscNormal == 1){
+    GuiControl, VimGuiSettings:, VimLongEscNormal, 1
+  }
   Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimIcon, Enable tray icon
   if(VimIcon == 1){
     GuiControl, VimGuiSettings:, VimIcon, 1
@@ -330,6 +341,7 @@ VimGuiSettingsReset:
   VimJJ := VimJJIni
   VimJK := VimJKIni
   VimKV := VimKVIni
+  VimLongEscNormal := VimLongEscNormalIni
   VimIcon := VimIconIni
   VimIconCheck := VimIconCheckIni
   VimIconCheckInterval := VimIconCheckIntervalIni
@@ -570,6 +582,7 @@ VimReadIni(){
   IniRead, VimJJ, %VimIni%, %VimSection%, VimJJ, %VimJJ%
   IniRead, VimKV, %VimIni%, %VimSection%, VimKV, %VimKV%
   IniRead, VimJK, %VimIni%, %VimSection%, VimJK, %VimJK%
+  IniRead, VimLongEscNormal, %VimIni%, %VimSection%, VimLongEscNormal, %VimLongEscNormal%
   IniRead, VimIcon, %VimIni%, %VimSection%, VimIcon, %VimIcon%
   IniRead, VimIconCheck, %VimIni%, %VimSection%, VimIconCheck, %VimIconCheck%
   IniRead, VimIconCheckInterval, %VimIni%, %VimSection%, VimIconCheckInterval, %VimIconCheckInterval%
@@ -599,6 +612,7 @@ VimWriteIni(){
   IniWrite, % VimJJ, % VimIni, % VimSection, VimJJ
   IniWrite, % VimJK, % VimIni, % VimSection, VimJK
   IniWrite, % VimKV, % VimIni, % VimSection, VimKV
+  IniWrite, % VimLongEscNormal, % VimIni, % VimSection, VimLongEscNormal
   IniWrite, % VimIcon, % VimIni, % VimSection, VimIcon
   IniWrite, % VimIconCheck, % VimIni, % VimSection, VimIconCheck
   IniWrite, % VimIconCheckInterval, % VimIni, % VimSection, VimIconCheckInterval
@@ -650,10 +664,19 @@ Return
 Esc:: ; Just send Esc at converting, long press for normal Esc.
   KeyWait, Esc, T0.5
   if (ErrorLevel){ ; long press
-    Send,{Esc}
+    if VimLongEscNormal {
+      checkIMENormal()
+    }else{
+      Send,{Esc}
+    }
     Return
+  }else{
+    if not VimLongEscNormal {
+      checkIMENormal()
+    }else{
+      Send,{Esc}
+    }
   }
-  checkIMENormal()
 Return
 
 ^[:: ; Go to Normal mode (for vim) with IME off even at converting.
@@ -677,7 +700,7 @@ checkIMENormal(){
   }else{
     VimSetMode("Vim_Normal")
   }
-Return
+}
 
 #If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimJK == 1)
 ~k up:: ; jk: go to Normal mode.
