@@ -62,20 +62,6 @@ checkIMENormal(){
   }
 }
 
-; Wait for a single letter to be inputted.
-; Returns true if that letter was inputted, false if anything else was or it times out.
-expectSingleLetterFromGroup(lettergroup){
-  ; I: ignore AHK-generated input.
-  ; T0.1: Timeout after 0.1 seconds.
-  ; V: Key entered is sent through to window.
-  ; L1: End after 1 letter entered
-  ; Ends when %letter% is entered
-  ; Input, out, I T0.1 V L1, %letter%
-  Input, out, T0.5 V L1, %lettergroup%
-  ; ErrorLevel is set to EndKey:%letter% if one of lettergroup is pressed.
-  return inStr(ErrorLevel,"EndKey")
-}
-
 #If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert"))
 ~k up::
   ; kv: go to Normal mode.
