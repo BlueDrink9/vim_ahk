@@ -80,7 +80,7 @@ if VimJK is not integer
   VimJK := VimJKIni
 VimJK_TT := "Asign jk to enter Normal mode"
 ; Set 1 to asign kv to enter Normal mode
-VimKVIni := 1
+VimKVIni := 0
 if VimKV is not integer
   VimKV := VimKVIni
 VimKV_TT := "Asign kv to enter Normal mode"
@@ -702,28 +702,46 @@ checkIMENormal(){
   }
 }
 
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimJK == 1)
-~k up:: ; jk: go to Normal mode.
-  Input, jout, I T0.1 V L1, j
-  if(ErrorLevel == "EndKey:J"){
-    SendInput, {BackSpace 2}
-    VimSetMode("Vim_Normal")
-  }
+; Wait for a single letter to be inputted.
+; Returns true if that letter was inputted, false if anything else was or it times out.
+expectSingleLetterFromGroup(lettergroup){
+  ; I: ignore AHK-generated input.
+  ; T0.1: Timeout after 0.1 seconds.
+  ; V: Key entered is sent through to window.
+  ; L1: End after 1 letter entered
+  ; Ends when %letter% is entered
+  ; Input, out, I T0.1 V L1, %letter%
+  Input, out, T0.5 V L1, %lettergroup%
+  ; ErrorLevel is set to EndKey:%letter% if one of lettergroup is pressed.
+  return inStr(ErrorLevel,"EndKey")
+}
 
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimKV == 1)
-~v up:: ; kv: go to Normal mode.
-  Input, jout, I T0.1 V L1, j
-  if(ErrorLevel == "EndKey:k"){
-    SendInput, {BackSpace 2}
-    VimSetMode("Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert"))
+~k up::
+  ; kv: go to Normal mode.
+  if (VimKV == 1){
+    if expectSingleLetterFromGroup("v"){
+      SendInput, {BackSpace 2}
+      VimSetMode("Vim_Normal")
+    }
   }
 Return
 
-Return
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimJJ == 1)
-~j up:: ; jj: go to Normal mode.
-  Input, jout, I T0.1 V L1, j
-  if(ErrorLevel == "EndKey:J"){
+; jj/jk: go to Normal mode.
+~j up::
+  if (VimJJ == 1){
+    if (VimJK == 1){
+      goNorm := expectSingleLetterFromGroup("jk")
+    }else{
+      gonorm := expectsingleletterfromgroup("j")
+    }
+  }else if (vimJK == 1) {
+    goNorm := expectSingleLetterFromGroup("k")
+  }else{
+    goNorm := False
+  }
+  tooltip, %goNorm%
+  if goNorm {
     SendInput, {BackSpace 2}
     VimSetMode("Vim_Normal")
   }
