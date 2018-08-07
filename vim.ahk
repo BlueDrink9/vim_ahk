@@ -78,13 +78,20 @@ Return
 
 ; jj/jk: go to Normal mode.
 ~j::
-  if (VimJJ == 1){
-    if (VimJK == 1){
+  ; Prevent kv also triggering input command
+  if (VimKV){
+    oldKV = 1
+    VimKV = 0
+  }else{
+    oldKV=0
+  }
+  if (VimJJ){
+    if (VimJK){
       goNorm := expectSingleLetterFromGroup("jk")
     }else{
       gonorm := expectsingleletterfromgroup("j")
     }
-  }else if (vimJK == 1) {
+  }else if (vimJK) {
     goNorm := expectSingleLetterFromGroup("k")
   }else{
     goNorm := False
@@ -92,6 +99,9 @@ Return
   if goNorm {
     SendInput, {BackSpace 2}
     VimSetMode("Vim_Normal")
+  }
+  if (oldKV){
+    VimKV=1
   }
 Return
 ; }}}
