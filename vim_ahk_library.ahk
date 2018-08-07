@@ -96,12 +96,9 @@ expectSingleLetterFromGroup(lettergroup){
   ; V: Key entered is sent through to window.
   ; L1: End after 1 letter entered
   ; Ends when %letter% is entered
-  ; Input, out, I T0.1 V L1, %letter%
-  tooltip, input %lettergroup%
+  ; Input, out, I T0.2 V L1, %lettergroup%
   Input, out, T0.2 V L1, %lettergroup%
-  tooltip, %ErrorLevel%
-  ; ErrorLevel is set to EndKey:%letter% if one of lettergroup is pressed.
-  return inStr(ErrorLevel,"EndKey")
+  return inStr(lettergroup,out)
 }
 
 VimReadIni(){

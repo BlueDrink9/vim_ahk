@@ -63,7 +63,7 @@ checkIMENormal(){
 }
 
 #If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert"))
-~k up::
+~k::
   ; kv: go to Normal mode.
   if (VimKV == 1){
     if expectSingleLetterFromGroup("v"){
@@ -74,7 +74,7 @@ checkIMENormal(){
 Return
 
 ; jj/jk: go to Normal mode.
-~j up::
+~j::
   if (VimJJ == 1){
     if (VimJK == 1){
       goNorm := expectSingleLetterFromGroup("jk")
