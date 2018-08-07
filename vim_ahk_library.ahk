@@ -97,8 +97,8 @@ expectSingleLetterFromGroup(lettergroup){
   ; L1: End after 1 letter entered
   ; Ends when %letter% is entered
   ; Input, out, I T0.2 V L1, %lettergroup%
-  Input, out, T0.2 V L1, %lettergroup%
-  return inStr(lettergroup,out)
+  Input, out, T0.3 V L1, %lettergroup%
+  return inStr(ErrorLevel,"EndKey")
 }
 
 VimReadIni(){
