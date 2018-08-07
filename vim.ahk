@@ -2,6 +2,9 @@
 #include %A_ScriptDir%\settingsUI.ahk
 #include %A_ScriptDir%\IME.ahk
 #include %A_ScriptDir%\vim_ahk_library.ahk
+; Directives to include the up and down exes when compiling to exe.
+FileInstall, sendDown.exe, sendDown.exe
+FileInstall, sendUp.exe, sendUp.exe
 
 ; Vim mode {{{
 #If
