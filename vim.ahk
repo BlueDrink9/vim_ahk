@@ -650,10 +650,19 @@ Return
 Esc:: ; Just send Esc at converting, long press for normal Esc.
   KeyWait, Esc, T0.5
   if (ErrorLevel){ ; long press
-    Send,{Esc}
+    if VimLongEscNormal {
+      checkIMENormal()
+    }else{
+      Send,{Esc}
+    }
     Return
+  }else{
+    if not VimLongEscNormal {
+      checkIMENormal()
+    }else{
+      Send,{Esc}
+    }
   }
-  checkIMENormal()
 Return
 
 ^[:: ; Go to Normal mode (for vim) with IME off even at converting.
@@ -677,7 +686,7 @@ checkIMENormal(){
   }else{
     VimSetMode("Vim_Normal")
   }
-Return
+}
 
 #If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert")) and (VimJK == 1)
 ~k up:: ; jk: go to Normal mode.
