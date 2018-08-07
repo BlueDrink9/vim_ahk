@@ -49,8 +49,8 @@ Return
 Return
 
 checkIMENormal(){
-  VimLastIME:=VIM_IME_Get()
-  if(VimLastIME){
+  L_VimLastIME:=VIM_IME_Get()
+  if(L_VimLastIME){
     if(VIM_IME_GetConverting(A)){
       Send,{Esc}
     }else{
