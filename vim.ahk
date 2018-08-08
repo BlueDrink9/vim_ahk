@@ -24,7 +24,7 @@ Return
 ; }}}
 
 ; Enter vim normal mode {{{
-Esc:: ; Just send Esc at converting, long press for normal Esc.
+Esc:: ; Just send Esc at converting, long press for normal Esc (depending on options)
   KeyWait, Esc, T0.5
   if (ErrorLevel){ ; long press
     if VimLongEscNormal {
@@ -50,6 +50,10 @@ Return
   }
   checkIMENormal()
 Return
+
+; Set normal-mode hotkeys to high priority, so they can interrupt any other thread.
+hotkey,Esc,,P50
+hotkey,^],,P50
 
 checkIMENormal(){
   L_VimLastIME:=VIM_IME_Get()
