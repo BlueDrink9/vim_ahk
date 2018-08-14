@@ -219,92 +219,39 @@ Space::Send, {Right}
 ; }}}
 
 ; Replace {{{
-r::VimSetMode("r_once")
-+r::VimSetMode("r_repeat")
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "r_once" or VimMode == "r_repeat")
-; {{{ Disable normal mappings, allow keys to pass through instead.
-~a::
-~b::
-~c::
-~d::
-~e::
-~f::
-~g::
-~h::
-~i::
-~j::
-~k::
-~l::
-~m::
-~n::
-~o::
-~p::
-~q::
-~r::
-~s::
-~t::
-~u::
-~v::
-~w::
-~x::
-~y::
-~z::
-~0::
-~1::
-~2::
-~3::
-~4::
-~5::
-~6::
-~7::
-~8::
-~9::
-~::
-; ~~::
-~!::
-~@::
-~#::
-~$::
-~%::
-~^::
-~&::
-~*::
-~(::
-~)::
-~_::
-~=::
-~+::
-~[::
-~{::
-~]::
-~}::
-~\::
-~|::
-~'::
-~"::
-~,::
-~<::
-~.::
-~>::
-~;::
-~+;::
-~Space::
-; }}}
-  delWithRepeatCheck()
-Return
-; ::: ; ":" can't be used with "~"?
-;   Send, {:}
-;   delWithRepeatCheck()
-; Return
-
-delWithRepeatCheck(){
-  Global VimMode
-  Send, {Del}
-  if (VimMode == "r_once") {
-    VimSetMode("Vim_Normal")
+r::replace()
++r::replace(true)
+replace(continue=false){
+  ; I: ignore AHK-generated input.
+  ; V: Key entered is sent through to window.
+  ; L1: End after 1 letter entered
+  ; Mode "Replace" has no special function, but it allows us to keep track of
+  ; the state here, and won't trigger insert-mode mappings.
+  VimSetMode("Replace")
+  if continue {
+    loop {
+      Input, out, V L1,{esc}
+      ; Check if we have been interrupted (eg by some other escape method) before continuing.
+      if (VimMode() != "Replace") {
+        return
+      }
+      ; Esc must be handled separately.
+      if inStr(ErrorLevel,"EndKey"){
+        break
+      }
+      ; Check if a character was typed, rather than another button.
+      if (out != "") {
+        send {del}
+      }
+    }
+  }else{
+    Input, out, V L1, {Esc}
+    send {del}
   }
+  VimSetMode("Vim_Normal")
 }
 ; }}}
+
 
 ; Move {{{
 ; g {{{

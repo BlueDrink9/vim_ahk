@@ -39,6 +39,9 @@ VimSetIcon(Mode=""){
   }
 }
 
+; NOTE: Currently, any mode that isn't otherwise specially handled will
+; send letters through as if in insert mode.
+; However, they may not trigger insert-specific mappings.
 VimSetMode(Mode="", g=0, n=0, LineCopy=-1){
   global
   if(Mode != ""){
@@ -75,6 +78,10 @@ VimCheckMode(verbose=1, Mode="", g=0, n=0, LineCopy=-1, force=0){
     Msgbox, , Vim Ahk, VimMode: %VimMode%`nVim_g: %Vim_g%`nVim_n: %Vim_n%`nVimLineCopy: %VimLineCopy%
   }
   Return
+}
+VimMode(){
+  Global VimMode
+  return VimMode
 }
 
 VimStatus(Title, lines=1){
