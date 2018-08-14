@@ -46,7 +46,7 @@ checkValidMode(mode){
     if not hasValue(possibleVimModes, mode){
       throw Exception("Invalid mode specified",-3,
       ( Join
-mode " is not a valid mode as defined by the possibleVimModes
+"`"" mode "`"" " is not a valid mode as defined by the possibleVimModes
  array at the top of vim_ahk_library. This may be a typo.
  Fix this error by using an existing mode,
  or adding your mode to the array.")
