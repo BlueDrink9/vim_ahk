@@ -218,9 +218,13 @@ hasValue(haystack, needle, full_match = true) {
   }
   for index,value in haystack{
     if full_match{
-      return (value==needle)
+      if (value==needle){
+        return true
+      }
     }else{
-      return inStr(value, needle)
+      if (inStr(value, needle)){
+        return true
+      }
     }
   }
   return false
