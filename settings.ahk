@@ -1,6 +1,7 @@
 ; AutohHotkey settings {{{
 
 ; #Warn ; Provides code warnings when running
+warn:=true ; For custom warnings/exceptions/error checking
 ; #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 #UseHook On ; Make it a bit slow, but can avoid infinitude loop

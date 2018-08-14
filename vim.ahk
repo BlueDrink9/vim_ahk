@@ -1,4 +1,11 @@
-﻿#include %A_ScriptDir%\settings.ahk
+﻿; Autorun section {{{
+possibleVimModes := []
+possibleVimModes.Push("Vim_Normal", "Insert", "Replace", "Vim_ydc_y"
+, "Vim_ydc_c", "Vim_ydc_d", "Vim_VisualLine", "Vim_VisualFirst"
+, "Vim_VisualChar", "Command", "Command_w", "Command_q", "Z", "")
+; Autorun section }}}
+
+#include %A_ScriptDir%\settings.ahk
 #include %A_ScriptDir%\settingsUI.ahk
 #include %A_ScriptDir%\IME.ahk
 #include %A_ScriptDir%\vim_ahk_library.ahk
@@ -8,7 +15,6 @@ FileInstall, sendUp.exe, sendUp.exe
 
 ; Vim mode {{{
 #If
-
 ; Launch Settings {{{
 ^!+v::
   Gosub, MenuVimSettings

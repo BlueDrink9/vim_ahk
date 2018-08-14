@@ -1,4 +1,5 @@
 ; Basic Functions {{{
+
 VimSetGroup() {
   global
   VimGroupN++
@@ -39,11 +40,31 @@ VimSetIcon(Mode=""){
   }
 }
 
+checkValidMode(mode){
+  Global possibleVimModes
+  try {
+    if not hasValue(possibleVimModes, mode){
+      throw Exception("Invalid mode specified",-3,
+      ( Join
+mode " is not a valid mode as defined by the possibleVimModes
+ array at the top of vim_ahk_library. This may be a typo.
+ Fix this error by using an existing mode,
+ or adding your mode to the array.")
+      )
+    }
+  } catch e {
+    MsgBox % "Warning: " e.Message "`n" e.Extra "`n`n Called in " e.What " at line " e.Line
+  }
+}
+
 ; NOTE: Currently, any mode that isn't otherwise specially handled will
 ; send letters through as if in insert mode.
 ; However, they may not trigger insert-specific mappings.
 VimSetMode(Mode="", g=0, n=0, LineCopy=-1){
   global
+  if warn {
+    checkValidMode(mode)
+  }
   if(Mode != ""){
     VimMode := Mode
     If(Mode == "Insert") and (VimRestoreIME == 1){
@@ -175,6 +196,19 @@ Return
 VimStopStatusCheck:
   SetTimer, VimStatusCheckTimer, off
 Return
+
+hasValue(haystack, needle) {
+  if(!isObject(haystack)){
+    return false
+  }else if(haystack.Length()==0){
+    return false
+  }
+  for index,value in haystack{
+    if(value==needle)
+      return true
+  }
+  return false
+}
 ; }}}
 ; vim: foldmethod=marker
 ; vim: foldmarker={{{,}}}
