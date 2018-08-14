@@ -158,7 +158,7 @@ Return
 ; }}}
 
 ; Repeat {{{
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode,"Vim_"))
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_"))
 1::
 2::
 3::
@@ -172,7 +172,7 @@ Return
   VimSetMode("", 0, n_repeat)
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode,"Vim_")) and (Vim_n > 0)
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_")) and (Vim_n > 0)
 0:: ; 0 is used as {Home} for Vim_n=0
   n_repeat := Vim_n*10 + A_ThisHotkey
   VimSetMode("", 0, n_repeat)
@@ -180,7 +180,7 @@ Return
 ; }}}
 
 ; Normal Mode Basic {{{
-#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_Normal"))
 ; Undo/Redo
 u::Send,^z
 ^r::Send,^y
@@ -261,13 +261,13 @@ replace(continue=false){
 
 ; Move {{{
 ; g {{{
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode,"Vim_")) and (not Vim_g)
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_")) and (not Vim_g)
 g::VimSetMode("", 1)
 ; }}}
 
 VimMove(key="", shift=0){
   global
-  if(InStr(VimMode, "Visual") or InStr(VimMode, "ydc") or shift == 1){
+  if(strIsInCurrentVimMode("Visual") or strIsInCurrentVimMode("ydc") or shift == 1){
     Send, {Shift Down}
   }
   ; Left/Right
@@ -299,11 +299,11 @@ VimMove(key="", shift=0){
   if(isCurrentVimMode("Vim_VisualLineFirst")) and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
     VimSetMode("Vim_VisualLine")
   }
-  if(InStr(VimMode, "Vim_ydc")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
+  if(strIsInCurrentVimMode("Vim_ydc")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
     VimLineCopy := 1
     Send,{Shift Up}{Home}{Down}{Shift Down}{Up}
   }
-  if(InStr(VimMode,"Vim_ydc")) and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
+  if(strIsInCurrentVimMode("Vim_ydc")) and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
     VimLineCopy := 1
     Send,{Shift Up}{Home}{Shift Down}{Down}
   }
@@ -366,7 +366,7 @@ VimMoveLoop(key="", shift=0){
     VimMove(key, shift)
   }
 }
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode,"Vim_"))
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_"))
 ; 1 character
 h::VimMoveLoop("h")
 j::VimMoveLoop("j")
@@ -399,7 +399,7 @@ PgUp::VimMoveLoop("PgUp")
 ; G
 +g::VimMove("+g")
 ; gg
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Vim_")) and (Vim_g)
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_")) and (Vim_g)
 g::VimMove("g")
 ; }}} Move
 
@@ -561,14 +561,14 @@ Return
 Return
 
 ; ydc
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Visual"))
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Visual"))
 y::
   Clipboard :=
   Send, ^c
   Send, {Right}
   Send, {Left}
   ClipWait, 1
-  if(InStr(VimMode, "Line")){
+  if(strIsInCurrentVimMode("Line")){
     VimSetMode("Vim_Normal", 0, 0, 1)
   }else{
     VimSetMode("Vim_Normal", 0, 0, 0)
@@ -579,7 +579,7 @@ d::
   Clipboard :=
   Send, ^x
   ClipWait, 1
-  if(InStr(VimMode,"Line")){
+  if(strIsInCurrentVimMode("Line")){
     VimSetMode("Vim_Normal", 0, 0, 1)
   }else{
     VimSetMode("Vim_Normal", 0, 0, 0)
@@ -590,7 +590,7 @@ x::
   Clipboard :=
   Send, ^x
   ClipWait, 1
-  if(InStr(VimMode, "Line")){
+  if(strIsInCurrentVimMode("Line")){
     VimSetMode("Vim_Normal", 0, 0, 1)
   }else{
     VimSetMode("Vim_Normal", 0, 0, 0)
@@ -601,7 +601,7 @@ c::
   Clipboard :=
   Send, ^x
   ClipWait, 1
-  if(InStr(VimMode, "Line")){
+  if(strIsInCurrentVimMode("Line")){
     VimSetMode("Insert", 0, 0, 1)
   }else{
     VimSetMode("Insert", 0, 0, 0)
@@ -687,7 +687,7 @@ Return
 ; }}} Vim command mode
 
 ; Disable other keys {{{
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "ydc") or InStr(VimMode, "Command") or (isCurrentVimMode("Z")))
+#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("ydc") or strIsInCurrentVimMode("Command") or (isCurrentVimMode("Z")))
 *a::
 *b::
 *c::
@@ -758,7 +758,7 @@ Space::
   VimSetMode("Vim_Normal")
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and InStr(VimMode,"Vim_") and (VimDisableUnused == 2)
+#If WinActive("ahk_group " . VimGroupName) and strIsInCurrentVimMode("Vim_") and (VimDisableUnused == 2)
 a::
 b::
 c::
@@ -854,7 +854,7 @@ _::
 Space::
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and InStr(VimMode,"Vim_") and (VimDisableUnused == 3)
+#If WinActive("ahk_group " . VimGroupName) and strIsInCurrentVimMode("Vim_") and (VimDisableUnused == 3)
 *a::
 *b::
 *c::
