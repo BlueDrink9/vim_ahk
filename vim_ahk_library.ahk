@@ -40,13 +40,14 @@ VimSetIcon(Mode=""){
   }
 }
 
-checkValidMode(mode){
+checkValidMode(mode, full_match = true){
   Global possibleVimModes
   try {
-    if not hasValue(possibleVimModes, mode){
+    in?:= (not full_match) ? "in " : ""
+    if not hasValue(possibleVimModes, mode, full_match) {
       throw Exception("Invalid mode specified",-3,
       ( Join
-"`"" mode "`"" " is not a valid mode as defined by the possibleVimModes
+"`"" mode "`"" " is not " in? "a valid mode as defined by the possibleVimModes
  array at the top of vim_ahk_library. This may be a typo.
  Fix this error by using an existing mode,
  or adding your mode to the array.")
@@ -90,6 +91,13 @@ isCurrentVimMode(mode){
     checkValidMode(mode)
   }
   return (mode == VimMode)
+}
+
+strIsInCurrentVimMode(str){
+  if warn {
+    checkValidMode(str, false)
+  }
+  return (inStr(VimMode, str))
 }
 
 VimCheckMode(verbose=1, Mode="", g=0, n=0, LineCopy=-1, force=0){
@@ -200,15 +208,18 @@ VimStopStatusCheck:
   SetTimer, VimStatusCheckTimer, off
 Return
 
-hasValue(haystack, needle) {
+hasValue(haystack, needle, full_match = true) {
   if(!isObject(haystack)){
     return false
   }else if(haystack.Length()==0){
     return false
   }
   for index,value in haystack{
-    if(value==needle)
-      return true
+    if full_match{
+      return (value==needle)
+    }else{
+      return inStr(value, needle)
+    }
   }
   return false
 }
