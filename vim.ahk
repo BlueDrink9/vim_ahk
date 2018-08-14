@@ -292,11 +292,11 @@ VimMove(key="", shift=0){
     }
   }
   ; Up/Down
-  if(isCurrentVimMode("Vim_VisualLineFirst") and (key == "k" or key == "^u" or key == "^b" or key == "g"){
+  if(isCurrentVimMode("Vim_VisualLineFirst")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
     Send, {Shift Up}{End}{Home}{Shift Down}{Up}
     VimSetMode("Vim_VisualLine")
   }
-  if(isCurrentVimMode("Vim_VisualLineFirst") and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
+  if(isCurrentVimMode("Vim_VisualLineFirst")) and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
     VimSetMode("Vim_VisualLine")
   }
   if(InStr(VimMode, "Vim_ydc")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
