@@ -75,7 +75,7 @@ checkIMENormal(){
   }
 }
 
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "Insert"))
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Insert"))
 ~k::
   ; kv: go to Normal mode.
   if (VimKV == 1){
@@ -117,7 +117,7 @@ Return
 ; }}}
 
 ; Enter vim insert mode (Exit vim normal mode) {{{
-#If WinActive("ahk_group " . VimGroupName) && (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) && (isCurrentVimMode("Vim_Normal"))
 i::VimSetMode("Insert")
 
 ; MS Office lets you interact with "the ribbon" (toolbar) via keyboard by 
@@ -180,7 +180,7 @@ Return
 ; }}}
 
 ; Normal Mode Basic {{{
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 ; Undo/Redo
 u::Send,^z
 ^r::Send,^y
@@ -205,7 +205,7 @@ u::Send,^z
 Return ; }}}
 
 +z::VimSetMode("Z")
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Z")
+#If WinActive("ahk_group " . VimGroupName) and isCurrentVimMode("Z")
 +z::
   Send, ^s
   Send, !{F4}
@@ -217,7 +217,7 @@ Return
   VimSetMode("Vim_Normal")
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and isCurrentVimMode("Vim_Normal")
 Space::Send, {Right}
 
 ; period
@@ -238,7 +238,7 @@ replace(continue=false){
     loop {
       Input, out, V L1,{esc}
       ; Check if we have been interrupted (eg by some other escape method) before continuing.
-      if (VimMode() != "Replace") {
+      if not isCurrentVimMode("Replace") {
         return
       }
       ; Esc must be handled separately.
@@ -271,7 +271,7 @@ VimMove(key="", shift=0){
     Send, {Shift Down}
   }
   ; Left/Right
-  if(not InStr(VimMode, "Line")){
+  if(not isCurrentVimMode("Vim_VisualLine")){
     ; 1 character
     if(key == "h"){
       Send, {Left}
@@ -292,11 +292,11 @@ VimMove(key="", shift=0){
     }
   }
   ; Up/Down
-  if(VimMode == "Vim_VisualLineFirst") and (key == "k" or key == "^u" or key == "^b" or key == "g"){
+  if(isCurrentVimMode("Vim_VisualLineFirst") and (key == "k" or key == "^u" or key == "^b" or key == "g"){
     Send, {Shift Up}{End}{Home}{Shift Down}{Up}
     VimSetMode("Vim_VisualLine")
   }
-  if(VimMode == "Vim_VisualLineFirst") and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
+  if(isCurrentVimMode("Vim_VisualLineFirst") and (key == "j" or key == "^d" or key == "^f" or key == "+g"){
     VimSetMode("Vim_VisualLine")
   }
   if(InStr(VimMode, "Vim_ydc")) and (key == "k" or key == "^u" or key == "^b" or key == "g"){
@@ -339,17 +339,17 @@ VimMove(key="", shift=0){
   }
   Send,{Shift Up}
 
-  if(VimMode == "Vim_ydc_y"){
+  if(isCurrentVimMode("Vim_ydc_y")){
     Clipboard :=
     Send, ^c
     ClipWait, 1
     VimSetMode("Vim_Normal")
-  }else if(VimMode == "Vim_ydc_d"){
+  }else if(isCurrentVimMode("Vim_ydc_d")){
     Clipboard :=
     Send, ^x
     ClipWait, 1
     VimSetMode("Vim_Normal")
-  }else if(VimMode == ="Vim_ydc_c"){
+  }else if(isCurrentVimMode("Vim_ydc_c")){
     Clipboard :=
     Send, ^x
     ClipWait, 1
@@ -405,7 +405,7 @@ g::VimMove("g")
 
 ; Copy/Cut/Paste (ydcxp){{{
 ; YDC
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 y::VimSetMode("Vim_ydc_y", 0, -1, 0)
 d::VimSetMode("Vim_ydc_d", 0, -1, 0)
 c::VimSetMode("Vim_ydc_c", 0, -1, 0)
@@ -445,7 +445,7 @@ Return
   }
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_ydc_y")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_ydc_y"))
 y::
   VimLineCopy := 1
   if WinActive("ahk_group VimDoubleHomeGroup"){
@@ -460,7 +460,7 @@ y::
   Send, {Left}{Home}
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_ydc_d")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_ydc_d"))
 d::
   VimLineCopy := 1
   if WinActive("ahk_group DoubleHome"){
@@ -474,7 +474,7 @@ d::
   }
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_ydc_c")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_ydc_c"))
 c::
   VimLineCopy := 1
   if WinActive("ahk_group DoubleHome"){
@@ -488,13 +488,13 @@ c::
   }
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 ; X
 x::Send, {Delete}
 +x::Send, {BS}
 
 ; Paste
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 p::
   ;i:=0
   ;;Send, {p Up}
@@ -548,7 +548,7 @@ Return
 ; Vim visual mode {{{
 
 ; Visual Char/Block/Line
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 v::VimSetMode("Vim_VisualChar")
 ^v::
   Send, ^b
@@ -629,7 +629,7 @@ Return
 ; }}} Vim visual mode
 
 ; Search {{{
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 /::
   Send, ^f
   VimSetMode("Insert")
@@ -651,10 +651,10 @@ n::Send, {F3}
 ; }}} Search
 
 ; Vim comamnd mode {{{
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Vim_Normal"))
 :::VimSetMode("Command") ;(:)
 `;::VimSetMode("Command") ;(;)
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Command")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Command"))
 w::VimSetMode("Command_w")
 q::VimSetMode("Command_q")
 h::
@@ -662,7 +662,7 @@ h::
   VimSetMode("Vim_Normal")
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Command_w")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Command_w"))
 Return::
   Send, ^s
   VimSetMode("Insert")
@@ -679,7 +679,7 @@ Space::
   VimSetMode("Insert")
 Return
 
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Command_q")
+#If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Command_q"))
 Return::
   Send, !{F4}
   VimSetMode("Insert")
@@ -687,7 +687,7 @@ Return
 ; }}} Vim command mode
 
 ; Disable other keys {{{
-#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "ydc") or InStr(VimMode, "Command") or (VimMode == "Z"))
+#If WinActive("ahk_group " . VimGroupName) and (InStr(VimMode, "ydc") or InStr(VimMode, "Command") or (isCurrentVimMode("Z")))
 *a::
 *b::
 *c::

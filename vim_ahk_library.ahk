@@ -85,6 +85,13 @@ VimSetMode(Mode="", g=0, n=0, LineCopy=-1){
   Return
 }
 
+isCurrentVimMode(mode){
+  if warn {
+    checkValidMode(mode)
+  }
+  return (mode == VimMode)
+}
+
 VimCheckMode(verbose=1, Mode="", g=0, n=0, LineCopy=-1, force=0){
   global
 
@@ -99,10 +106,6 @@ VimCheckMode(verbose=1, Mode="", g=0, n=0, LineCopy=-1, force=0){
     Msgbox, , Vim Ahk, VimMode: %VimMode%`nVim_g: %Vim_g%`nVim_n: %Vim_n%`nVimLineCopy: %VimLineCopy%
   }
   Return
-}
-VimMode(){
-  Global VimMode
-  return VimMode
 }
 
 VimStatus(Title, lines=1){

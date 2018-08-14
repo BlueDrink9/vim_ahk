@@ -167,7 +167,7 @@ VimReadIni()
 VimSetGroup()
 
 ; Starting variables
-VimMode := "Insert"
+VimMode := "Insert" ; TODO: make starting state an option
 Vim_g := 0
 Vim_n := 0
 VimLineCopy := 0
