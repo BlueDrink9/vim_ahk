@@ -87,6 +87,7 @@ VimSetMode(Mode="", g=0, n=0, LineCopy=-1){
 }
 
 isCurrentVimMode(mode){
+  global VimMode
   if warn {
     checkValidMode(mode)
   }
@@ -94,6 +95,7 @@ isCurrentVimMode(mode){
 }
 
 strIsInCurrentVimMode(str){
+  global VimMode
   if warn {
     checkValidMode(str, false)
   }
