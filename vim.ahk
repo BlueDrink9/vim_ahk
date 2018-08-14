@@ -182,8 +182,9 @@ u::Send,^z
 ; Combine lines
 +j::Send, {Down}{Home}{BS}{Space}{Left}
 
-; Change case
+; Change case {{{
 ~::
+  tooltip, hello
   bak := ClipboardAll
   Clipboard =
   Send, +{Right}^x
@@ -195,7 +196,7 @@ u::Send,^z
   }
   Send, ^v
   Clipboard := bak
-Return
+Return ; }}}
 
 +z::VimSetMode("Z")
 #If WinActive("ahk_group " . VimGroupName) and (VimMode == "Z")
@@ -218,11 +219,10 @@ Space::Send, {Right}
 ; }}}
 
 ; Replace {{{
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "Vim_Normal")
 r::VimSetMode("r_once")
 +r::VimSetMode("r_repeat")
-
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "r_once")
+#If WinActive("ahk_group " . VimGroupName) and (VimMode == "r_once" or VimMode == "r_repeat")
+; {{{ Disable normal mappings, allow keys to pass through instead.
 ~a::
 ~b::
 ~c::
@@ -259,8 +259,8 @@ r::VimSetMode("r_once")
 ~7::
 ~8::
 ~9::
-~`::
-~~::
+~::
+; ~~::
 ~!::
 ~@::
 ~#::
@@ -271,7 +271,6 @@ r::VimSetMode("r_once")
 ~*::
 ~(::
 ~)::
-~-::
 ~_::
 ~=::
 ~+::
@@ -281,96 +280,30 @@ r::VimSetMode("r_once")
 ~}::
 ~\::
 ~|::
-~;::
 ~'::
 ~"::
 ~,::
 ~<::
 ~.::
 ~>::
-~Space::
-  Send, {Del}
-  VimSetMode("Vim_Normal")
-Return
-
-::: ; ":" can't be used with "~"?
-  Send, {:}{Del}
-  VimSetMode("Vim_Normal")
-Return
-
-#If WinActive("ahk_group " . VimGroupName) and (VimMode == "r_repeat")
-~a::
-~b::
-~c::
-~d::
-~e::
-~f::
-~g::
-~h::
-~i::
-~j::
-~k::
-~l::
-~m::
-~n::
-~o::
-~p::
-~q::
-~r::
-~s::
-~t::
-~u::
-~v::
-~w::
-~x::
-~y::
-~z::
-~0::
-~1::
-~2::
-~3::
-~4::
-~5::
-~6::
-~7::
-~8::
-~9::
-~`::
-~~::
-~!::
-~@::
-~#::
-~$::
-~%::
-~^::
-~&::
-~*::
-~(::
-~)::
-~-::
-~_::
-~=::
-~+::
-~[::
-~{::
-~]::
-~}::
-~\::
-~|::
 ~;::
-~'::
-~"::
-~,::
-~<::
-~.::
-~>::
+~+;::
 ~Space::
-  Send, {Del}
+; }}}
+  delWithRepeatCheck()
 Return
+; ::: ; ":" can't be used with "~"?
+;   Send, {:}
+;   delWithRepeatCheck()
+; Return
 
-:::
-  Send, {:}{Del}
-Return
+delWithRepeatCheck(){
+  Global VimMode
+  Send, {Del}
+  if (VimMode == "r_once") {
+    VimSetMode("Vim_Normal")
+  }
+}
 ; }}}
 
 ; Move {{{
@@ -523,6 +456,7 @@ g::VimMove("g")
 y::VimSetMode("Vim_ydc_y", 0, -1, 0)
 d::VimSetMode("Vim_ydc_d", 0, -1, 0)
 c::VimSetMode("Vim_ydc_c", 0, -1, 0)
+; TODO reduce code duplication here
 +y::
   VimSetMode("Vim_ydc_y", 0, 0, 1)
   Sleep, 150 ; Need to wait (For variable change?)
