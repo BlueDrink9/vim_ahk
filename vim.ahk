@@ -284,7 +284,7 @@ VimMove(key="", shift=0){
     }else if(key == "$"){
       Send, {End}
     }else if(key == "^"){
-      Send, {Home}^{right}^{left}
+      Send, {Home}^{Right}^{Left}
     ; Words
     }else if(key == "w"){
       Send, ^{Right}
