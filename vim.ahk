@@ -927,6 +927,9 @@ Return
 ; }}}
 ; }}} Vim Mode
 
+; Reset the condition
+#If
+
 ; vim: foldmethod=marker
 ; vim: foldmarker={{{,}}}
 ; vim: ts=2:sw=2:sts=2:et
