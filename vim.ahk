@@ -3,12 +3,13 @@ possibleVimModes := []
 possibleVimModes.Push("Vim_Normal", "Insert", "Replace", "Vim_ydc_y"
 , "Vim_ydc_c", "Vim_ydc_d", "Vim_VisualLine", "Vim_VisualFirst"
 , "Vim_VisualChar", "Command", "Command_w", "Command_q", "Z", "")
-; Autorun section }}}
 
-#include %A_ScriptDir%\settings.ahk
-#include %A_ScriptDir%\settingsUI.ahk
-#include %A_ScriptDir%\IME.ahk
-#include %A_ScriptDir%\vim_ahk_library.ahk
+#include %A_LineFile%\..\settings.ahk
+; Autorun section }}}
+Return ; Prevents commands below here from auto-running
+#include %A_LineFile%\..\settingsUI.ahk
+#include %A_LineFile%\..\IME.ahk
+#include %A_LineFile%\..\vim_ahk_library.ahk
 ; Directives to include the up and down exes when compiling to exe.
 FileInstall, sendDown.exe, sendDown.exe
 FileInstall, sendUp.exe, sendUp.exe
