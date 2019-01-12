@@ -1,5 +1,4 @@
 ; AutohHotkey settings {{{
-
 ; #Warn ; Provides code warnings when running
 warn:=true ; For custom warnings/exceptions/error checking
 ; #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
@@ -22,6 +21,14 @@ VimDate := "15/Apr/2018"
 VimAuthor := "rcmdnk"
 VimDescription := "Vim emulation with AutoHotkey, everywhere in Windows."
 VimHomepage := "https://github.com/rcmdnk/vim_ahk"
+
+; Arguments {{{
+if (A_Args.Length() > 0) {
+  if hasValue(A_Args, "--testing") {
+    testing=true
+  }
+}
+; Arguments }}}
 
 ; Ini file
 VimIniDir := % A_AppData . "\AutoHotkey"
@@ -195,8 +202,6 @@ VimSetIcon(VimMode)
 if(VimIconCheck == 1){
   SetTimer, VimStatusCheckTimer, %VimIconCheckInterval%
 }
-
-Return
 
 ; }}}
 ; vim: foldmethod=marker

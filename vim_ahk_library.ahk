@@ -150,7 +150,10 @@ VimReadIni(){
   IniRead, VimJJ, %VimIni%, %VimSection%, VimJJ, %VimJJ%
   IniRead, VimKV, %VimIni%, %VimSection%, VimKV, %VimKV%
   IniRead, VimJK, %VimIni%, %VimSection%, VimJK, %VimJK%
-  IniRead, VimLongEscNormal, %VimIni%, %VimSection%, VimLongEscNormal, %VimLongEscNormal%
+  ; Only use default for this if testing
+  if !testing {
+    IniRead, VimLongEscNormal, %VimIni%, %VimSection%, VimLongEscNormal, %VimLongEscNormal%
+  }
   IniRead, VimIcon, %VimIni%, %VimSection%, VimIcon, %VimIcon%
   IniRead, VimIconCheck, %VimIni%, %VimSection%, VimIconCheck, %VimIconCheck%
   IniRead, VimIconCheckInterval, %VimIni%, %VimSection%, VimIconCheckInterval, %VimIconCheckInterval%
