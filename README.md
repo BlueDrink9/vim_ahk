@@ -14,11 +14,10 @@ You can also use vim.exe, which can work standalone w/o AutoHotKey.
 
 If you are running AutoHotKey with another script,
 you can include it in your script using AutoHotKey...
-Please put vim.ahk in `\Users\%username%\Documents`
-or where the script is in,
+Please put this project in the directory the script is in,
 and add the following line in AutoHotkey.ahk or your script:
 
-    #Include  %A_LineFile%\..\vim.ahk
+    #Include  %A_LineFile%\..\vim_ahk\vim.ahk
 
 at the end of the <a href="http://www.autohotkey.com/docs/Scripts.htm#auto">Auto-execute section</a>.
 
