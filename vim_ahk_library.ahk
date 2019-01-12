@@ -67,6 +67,10 @@ VimSetMode(Mode="", g=0, n=0, LineCopy=-1){
     checkValidMode(mode)
   }
   if(Mode != ""){
+    if (Mode = "Vim_Normal" and VimMode != Mode){
+      ; Send left to drop you "on" the letter you were in front of.
+      send {left}
+    }
     VimMode := Mode
     If(Mode == "Insert") and (VimRestoreIME == 1){
       VIM_IME_SET(VimLastIME)
