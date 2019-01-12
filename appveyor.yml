@@ -10,7 +10,7 @@ version: 0.5.{build}
 environment:
   # APPVEYOR_RDP_PASSWORD=""
   github_access:
-    secure: qls7CpW54Nf3d/r2FRdxQJVsZEOZRIKnUNLmEV+OmiYv7jl3y+hZjTZF7hL4XUgw
+    secure: AcSBKQK8WlRZMMYnyxFqPwp0IcRTDnepUWW3fe/emxRgCIEgyFpJZL8Ma0tP4ZOC
   git_email:
     secure: Ai43hWJZMaTrKY0n/9bALQtFCURXqb8aCE3ZMPzjpoU=
   git_user:
