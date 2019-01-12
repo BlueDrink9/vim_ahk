@@ -70,7 +70,7 @@ deploy:
   description: 'Latest CI build (add own description and update release name)'
   provider: GitHub
   auth_token: $(github_access) # your encrypted token from GitHub
-  artifact: *\.exe
+  artifact: /.*\.exe/
   draft: true
   prerelease: true
   on:
