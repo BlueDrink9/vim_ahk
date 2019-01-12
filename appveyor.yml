@@ -29,7 +29,7 @@ artifacts:
 init:
   # Initialise remote desktop stuff
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  - cmd: cd %APPVEYOR_BUILD-FOLDER% && pwd && git describe --tags --always > tag.txt
+  - cmd: cd %APPVEYOR_BUILD-FOLDER% && dir /ah && git describe --tags --always > tag.txt
   - cmd: set /p RELEASE-TAG=<latest-tag.txt
 
   # Set env variables
