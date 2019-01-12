@@ -29,8 +29,8 @@ artifacts:
 init:
   # Initialise remote desktop stuff
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  - cmd: cd %APPVEYOR_BUILD-FOLDER% && dir /ah && git describe --tags --always > tag.txt
-  - cmd: set /p RELEASE-TAG=<latest-tag.txt
+  # - cmd: cd %APPVEYOR_BUILD-FOLDER% && dir /ah && git describe --tags --always > tag.txt
+  # - cmd: set /p RELEASE-TAG=<latest-tag.txt
 
   # Set env variables
   # - cmd: setx rdpPass %appveyor_rdp_password%
@@ -66,7 +66,8 @@ after_test:
     #- git push origin HEAD:master
 
 deploy:
-  release: vim_ahk-$(RELEASE-TAG)
+  release: vim_ahk-$(APPVEYOR_REPO_TAG_NAME)
+  # release: vim_ahk-$(RELEASE-TAG)
   description: 'Latest CI build (add own description and update release name)'
   provider: GitHub
   auth_token: $(github_access) # your encrypted token from GitHub
