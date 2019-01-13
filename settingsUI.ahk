@@ -31,37 +31,18 @@ MenuVimStatus:
 Return
 
 MenuVimSettings:
+  global boxCreated
   Gui, VimGuiSettings:+LabelVimGuiSettings
   Gui, VimGuiSettings:-MinimizeBox
   Gui, VimGuiSettings:-Resize
-  Gui, VimGuiSettings:Add, GroupBox, xm X+10 YM+10 Section w370 h470, Settings
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 YS+30 vVimRestoreIME, Restore IME at entering Insert mode
-  if(VimRestoreIME == 1){
-    GuiControl, VimGuiSettings:, VimRestoreIME, 1
-  }
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimJJ, JJ to enter Normal mode
-  if(VimJJ == 1){
-    GuiControl, VimGuiSettings:, VimJJ, 1
-  }
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimKV, KV to enter Normal mode
-  if(VimKV == 1){
-    GuiControl, VimGuiSettings:, VimKV, 1
-  }
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimJK, JK to enter Normal mode
-  if(VimJK == 1){
-    GuiControl, VimGuiSettings:, VimJK, 1
-  }
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimLongEscNormal, Long press esc to enter normal mode
-  if(VimLongEscNormal == 1){
-    GuiControl, VimGuiSettings:, VimLongEscNormal, 1
-  }
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimIcon, Enable tray icon
-  if(VimIcon == 1){
-    GuiControl, VimGuiSettings:, VimIcon, 1
-  }
-  Gui, VimGuiSettings:Add, Checkbox, XS+10 Y+10 vVimIconCheck, Enable icon check
-  if(VimIconCheck == 1){
-    GuiControl, VimGuiSettings:, VimIconCheck, 1
+  boxCreated=false
+  for i, s in settings {
+    ; if (s["type"] = "checkbox"){
+      addCheckbox(s["name"], s["default"], s["descriptionShort"], s["descriptionLong"])
+    ; }else{
+    ;   if warn
+    ;     msgbox % "Warning: Invalid setting type specified"
+    ; }
   }
   Gui, VimGuiSettings:Add, Text, XS+10 Y+20 gVimDisableUnusedLevel vVimDisableUnusedLevel, Disable unused keys in Normal mode
   Gui, VimGuiSettings:Add, DropDownList, W320 vVimDisableUnusedValue Choose%VimDisableUnused%, %VimDisableUnused1%|%VimDisableUnused2%|%VimDisableUnused3%
@@ -152,15 +133,12 @@ VimGuiSettingsReset:
   IfExist, %VimIni%
     FileDelete, %VimIni%
 
+  for i, s in settings {
+    name := s["name"]
+    %name% := s["default"]
+  }
   VimGroup := VimGroupIni
   VimDisableUnused := VimDisableUnusedIni
-  VimRestoreIME := VimRestoreIMEIni
-  VimJJ := VimJJIni
-  VimJK := VimJKIni
-  VimKV := VimKVIni
-  VimLongEscNormal := VimLongEscNormalIni
-  VimIcon := VimIconIni
-  VimIconCheck := VimIconCheckIni
   VimIconCheckInterval := VimIconCheckIntervalIni
   VimVerbose := VimVerboseIni
 

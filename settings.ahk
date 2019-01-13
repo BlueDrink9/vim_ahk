@@ -4,9 +4,9 @@ warn:=true ; For custom warnings/exceptions/error checking
 ; #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 #UseHook On ; Make it a bit slow, but can avoid infinitude loop
-            ; Same as "$" for each hotkey
+; Same as "$" for each hotkey
 #InstallKeybdHook ; For checking key history
-                  ; Use ~500kB memory?
+; Use ~500kB memory?
 ; Prevent infinite loop of self-triggering keys (warns if more than 35/second)
 #HotkeyInterval 2000 ; Hotkey inteval (default 2000 milliseconds).
 #MaxHotkeysPerInterval 70 ; Max hotkeys per interval (default 70).
@@ -88,51 +88,53 @@ GroupAdd, VimDoubleHomeGroup, ahk_exe Code.exe ; Visual Studio Code
 ; Second read settings if it exits.
 
 ; If IME status is restored or not at entering insert mode. 1 for restoring. 0 for not to restore (always IME off at enterng insert mode).
-VimRestoreIMEIni := 1
-if VimRestoreIME is not integer
-  VimRestoreIME := VimRestoreIMEIni
-VimRestoreIME_TT := "Restore IME status at entering Insert mode."
+settings := [{name: "VimRestoreIME"
+, default: 1
+, descriptionLong: "Restore IME status at entering Insert mode"
+, descriptionShort: "Restore IME status at entering Insert mode."}]
 
 ; Set 1 to asign jj to enter Normal mode
-VimJJIni := 0
-if VimJJ is not integer
-  VimJJ := VimJJIni
-VimJJ_TT := "Asign jj to enter Normal mode"
+settings.push({name: "VimJJ"
+, default: 0
+, descriptionShort: "jj enters Normal mode"
+, descriptionLong: "Asign jj to enter Normal mode."})
+
 ; Set 1 to asign jk to enter Normal mode
-VimJKIni := 0
-if VimJK is not integer
-  VimJK := VimJKIni
-VimJK_TT := "Asign jk to enter Normal mode"
+settings.push({name: "VimJK"
+, default: 0
+, descriptionShort: "jk enters Normal mode"
+, descriptionLong: "Asign jk to enter Normal mode."})
+
 ; Set 1 to asign kv to enter Normal mode
-VimKVIni := 0
-if VimKV is not integer
-  VimKV := VimKVIni
-VimKV_TT := "Asign kv to enter Normal mode"
+settings.push({name: "VimKV"
+, default: 0
+, descriptionShort: "kv enters Normal mode"
+, descriptionLong: "Asign kv to enter Normal mode."})
 
 ; Set 1 to make holding esc enter normal mode and single press send through esc
-VimLongEscNormalIni := 0
-if VimLongEscNormal is not integer
-  VimLongEscNormal := VimLongEscNormalIni
-VimLongEscNormal_TT := "Hold esc to enter normal, single press to send esc to window"
-
+settings.push({name: "VimLongEscNormal"
+, default: 0
+, descriptionShort: "Long press esc to enter normal mode"
+, descriptionLong: "Hold esc to enter normal, single press to send esc to window."})
 
 ; Set 1 to enable Tray Icon for Vim Modes`nSet 0 for original Icon
-VimIconIni := 1
-if VimIcon is not integer
-  VimIcon := VimIconIni
-VimIcon_TT := "Enable tray icon for Vim Modes"
+settings.push({name: "VimIcon"
+, default: 1
+, descriptionShort: "Enable tray icon"
+, descriptionLong: "Enable tray icon for Vim Modes."})
 
 ; Set 1 to enable Tray Icon check
-VimIconCheckIni := 1
-if VimIconCheck is not integer
-  VimIconCheck := VimIconCheckIni
-VimIconCheck_TT := "Enable tray icon check"
+settings.push({name: "VimIconCheck"
+, default: 1
+, descriptionShort: "Enable tray icon check"
+, descriptionLong: "Enable tray icon check."})
+
 
 ; Disable unused keys in Normal mode
-VimDisableUnusedIni := 3
-if VimDisableUnused is not integer
+VimDisableUnusedIni :=
+if  is not integer
   VimDisableUnused := VimDisableUnusedIni
-VimDisableUnused1 := "1: Do not disable unused keys"
+VimDisableUnused1 := ""
 VimDisableUnused2 := "2: Disable alphabets (+shift) and symbols"
 VimDisableUnused3 := "3: Disable all including keys with modifiers (e.g. Ctrl+Z)"
 vimDisableUnusedMax := 3
@@ -166,6 +168,11 @@ VimGuiSettingsOK_TT := "Reflect changes and exit"
 VimGuiSettingsReset_TT := "Reset to the default values"
 VimGuiSettingsCancel_TT := "Don't change and exit"
 VimAhkGitHub_TT := VimHomepage
+
+
+for i, s in settings {
+  addSetting(s["name"], s["default"], s["descriptionShort"], s["descriptionLong"])
+}
 
 ; Read Ini
 VimReadIni()

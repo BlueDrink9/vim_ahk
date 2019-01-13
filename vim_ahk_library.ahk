@@ -150,16 +150,16 @@ VimReadIni(){
   global
   IniRead, VimGroup, %VimIni%, %VimSection%, VimGroup, %VimGroup%
   IniRead, VimDisableUnused, %VimIni%, %VimSection%, VimDisableUnused, %VimDisableUnused%
-  IniRead, VimRestoreIME, %VimIni%, %VimSection%, VimRestoreIME, %VimRestoreIME%
-  IniRead, VimJJ, %VimIni%, %VimSection%, VimJJ, %VimJJ%
-  IniRead, VimKV, %VimIni%, %VimSection%, VimKV, %VimKV%
-  IniRead, VimJK, %VimIni%, %VimSection%, VimJK, %VimJK%
-  ; Only use default for this if testing
-  if !testing {
-    IniRead, VimLongEscNormal, %VimIni%, %VimSection%, VimLongEscNormal, %VimLongEscNormal%
+
+  for i, s in settings {
+    if (testing and s["name"] = "VimLongEscNormal") {
+      ; Only use default for this if testing
+      continue
+    }
+    name := s["name"]
+    value := %name%
+    IniRead, %name%, %VimIni%, %VimSection%, %name%, %value%
   }
-  IniRead, VimIcon, %VimIni%, %VimSection%, VimIcon, %VimIcon%
-  IniRead, VimIconCheck, %VimIni%, %VimSection%, VimIconCheck, %VimIconCheck%
   IniRead, VimIconCheckInterval, %VimIni%, %VimSection%, VimIconCheckInterval, %VimIconCheckInterval%
   IniRead, VimVerbose, %VimIni%, %VimSection%, VimVerbose, %VimVerbose%
 }
@@ -183,13 +183,13 @@ VimWriteIni(){
   VimSetGroup()
   IniWrite, % VimGroup, % VimIni, % VimSection, VimGroup
   IniWrite, % VimDisableUnused, % VimIni, % VimSection, VimDisableUnused
-  IniWrite, % VimRestoreIME, % VimIni, % VimSection, VimRestoreIME
-  IniWrite, % VimJJ, % VimIni, % VimSection, VimJJ
-  IniWrite, % VimJK, % VimIni, % VimSection, VimJK
-  IniWrite, % VimKV, % VimIni, % VimSection, VimKV
-  IniWrite, % VimLongEscNormal, % VimIni, % VimSection, VimLongEscNormal
-  IniWrite, % VimIcon, % VimIni, % VimSection, VimIcon
-  IniWrite, % VimIconCheck, % VimIni, % VimSection, VimIconCheck
+
+  for i, s in settings {
+    name := s["name"]
+    value := %name%
+    IniWrite, %value%, %VimIni%, %VimSection%, %name%
+  }
+
   IniWrite, % VimIconCheckInterval, % VimIni, % VimSection, VimIconCheckInterval
   IniWrite, % VimVerbose, % VimIni, % VimSection, VimVerbose
 }
@@ -236,6 +236,53 @@ hasValue(haystack, needle, full_match = true) {
   }
   return false
 }
+
+; class checkboxSetting {
+;   }
+
+; Adds a setting to the UI and default ini.
+; name: name to use for the setting
+; DefaultVal: The value to use before setting and when resetting
+; descriptionShort: Label in the UI
+; descriptionLong: Tooltip text in UI.
+addSetting(name, defaultVal, descriptionShort, descriptionLong, type="checkbox"){
+  ; global %name%
+  global
+  ; msgbox % "Y = "Y
+  ; msgbox % "XS = "XS
+  %name%Ini := defaultVal
+  ; Blank variables are unset
+  if (%name% = ""){
+    %name% := defaultVal
+  }
+  %name%_TT := descriptionLong
+
+  ; if (type = "checkbox"){
+  ;   addCheckbox(name, defaultVal, descriptionShort, descriptionLong)
+  ; }else{
+  ;   if warn
+  ;     msgbox % "Warning: Invalid setting type specified"
+  ; }
+}
+
+addCheckbox(name, defaultVal, descriptionShort, descriptionLong){
+  global boxCreated
+  global settings
+  checkboxRows := settings.Length() + 1
+  if boxCreated=false
+  {
+  Gui, VimGuiSettings:Add, GroupBox, w320 R%checkboxRows% Section, Settings
+  boxCreated=true
+  }
+
+  Gui, VimGuiSettings:Add, Checkbox, xs+10 yp+20 v%name%, %descriptionShort%
+  if(%name% == 1){
+    GuiControl, VimGuiSettings:, %name%, 1
+  }
+}
+
+
+
 ; }}}
 ; vim: foldmethod=marker
 ; vim: foldmarker={{{,}}}
