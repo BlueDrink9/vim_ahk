@@ -84,8 +84,6 @@ GroupAdd, VimDoubleHomeGroup, ahk_exe Code.exe ; Visual Studio Code
 ; }}}
 
 ; Setting variables {{{
-; First check if they are already set (in mother script).
-; Second read settings if it exits.
 
 ; If IME status is restored or not at entering insert mode. 1 for restoring. 0 for not to restore (always IME off at enterng insert mode).
 settings := [{name: "VimRestoreIME"
