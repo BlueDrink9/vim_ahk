@@ -86,9 +86,9 @@ deploy:
   draft: true
   prerelease: true
   on:
-    # appveyor_repo_tag: true        # deploy on tag push only
+    appveyor_repo_tag: true        # deploy on tag push only
     #branch: master                 # release from master branch only
-    branch: testscript
+    # branch: testscript
 
 # Allow remote desktop access
 on_finish:
