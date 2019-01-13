@@ -32,6 +32,17 @@ init:
   # - cmd: cd %APPVEYOR_BUILD-FOLDER% && dir /ah && git describe --tags --always > tag.txt
   # - cmd: set /p RELEASE-TAG=<latest-tag.txt
 
+  # Set "build version number" to "short-commit-hash" or when tagged to "tag name" (Travis style)
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true")
+      {
+      Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_TAG_NAME.TrimStart("v"))"
+      }
+      else
+      {
+      Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.Substring(0, 7))"
+      }
+
   # Set env variables
   # - cmd: setx rdpPass %appveyor_rdp_password%
  
@@ -66,7 +77,7 @@ after_test:
     #- git push origin HEAD:master
 
 deploy:
-  release: vim_ahk-$(APPVEYOR_REPO_TAG_NAME)
+  release: vim_ahk-$(appveyor_build_version)
   # release: vim_ahk-$(RELEASE-TAG)
   description: 'Latest CI build (add own description and update release name)'
   provider: GitHub
