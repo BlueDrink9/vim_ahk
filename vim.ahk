@@ -23,7 +23,7 @@ Return
 
 ; }}}
 
-#If InActiveWindow()
+#If (InActiveWindow(true))
 ; Check Mode {{{
 ^!+c::
   VimCheckMode(VimVerboseMax, VimMode)
@@ -78,7 +78,7 @@ checkIMENormal(){
 Return
 
 
-#If InActiveWindow() and (isCurrentVimMode("Insert"))
+#If (InActiveWindow(true)) and (isCurrentVimMode("Insert"))
 ~k::
   ; kv: go to Normal mode.
   if (VimKV == 1){
@@ -120,7 +120,7 @@ Return
 ; }}}
 
 ; Enter vim insert mode (Exit vim normal mode) {{{
-#If InActiveWindow() && (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) && (isCurrentVimMode("Vim_Normal"))
 i::VimSetMode("Insert")
 
 ; MS Office lets you interact with "the ribbon" (toolbar) via keyboard by 
@@ -161,7 +161,7 @@ Return
 ; }}}
 
 ; Repeat {{{
-#If InActiveWindow() and (strIsInCurrentVimMode("Vim_"))
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Vim_"))
 1::
 2::
 3::
@@ -175,7 +175,7 @@ Return
   VimSetMode("", 0, n_repeat)
 Return
 
-#If InActiveWindow() and (strIsInCurrentVimMode("Vim_")) and (Vim_n > 0)
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Vim_")) and (Vim_n > 0)
 0:: ; 0 is used as {Home} for Vim_n=0
   n_repeat := Vim_n*10 + A_ThisHotkey
   VimSetMode("", 0, n_repeat)
@@ -183,7 +183,7 @@ Return
 ; }}}
 
 ; Normal Mode Basic {{{
-#If InActiveWindow() and (strIsInCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Vim_Normal"))
 ; Undo/Redo
 u::Send,^z
 ^r::Send,^y
@@ -208,7 +208,7 @@ u::Send,^z
 Return ; }}}
 
 +z::VimSetMode("Z")
-#If InActiveWindow() and isCurrentVimMode("Z")
+#If (InActiveWindow()) and isCurrentVimMode("Z")
 +z::
   Send, ^s
   Send, !{F4}
@@ -220,7 +220,7 @@ Return
   VimSetMode("Vim_Normal")
 Return
 
-#If InActiveWindow() and isCurrentVimMode("Vim_Normal")
+#If (InActiveWindow()) and isCurrentVimMode("Vim_Normal")
 Space::Send, {Right}
 
 ; period
@@ -264,7 +264,7 @@ replace(continue=false){
 
 ; Move {{{
 ; g {{{
-#If InActiveWindow() and (strIsInCurrentVimMode("Vim_")) and (not Vim_g)
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Vim_")) and (not Vim_g)
 g::VimSetMode("", 1)
 ; }}}
 
@@ -369,7 +369,7 @@ VimMoveLoop(key="", shift=0){
     VimMove(key, shift)
   }
 }
-#If InActiveWindow() and (strIsInCurrentVimMode("Vim_"))
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Vim_"))
 ; 1 character
 h::VimMoveLoop("h")
 j::VimMoveLoop("j")
@@ -402,13 +402,13 @@ PgUp::VimMoveLoop("PgUp")
 ; G
 +g::VimMove("+g")
 ; gg
-#If InActiveWindow() and (strIsInCurrentVimMode("Vim_")) and (Vim_g)
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Vim_")) and (Vim_g)
 g::VimMove("g")
 ; }}} Move
 
 ; Copy/Cut/Paste (ydcxp){{{
 ; YDC
-#If InActiveWindow() and (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_Normal"))
 y::VimSetMode("Vim_ydc_y", 0, -1, 0)
 d::VimSetMode("Vim_ydc_d", 0, -1, 0)
 c::VimSetMode("Vim_ydc_c", 0, -1, 0)
@@ -448,7 +448,7 @@ Return
   }
 Return
 
-#If InActiveWindow() and (isCurrentVimMode("Vim_ydc_y"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_ydc_y"))
 y::
   VimLineCopy := 1
   if WinActive("ahk_group VimDoubleHomeGroup"){
@@ -463,7 +463,7 @@ y::
   Send, {Left}{Home}
 Return
 
-#If InActiveWindow() and (isCurrentVimMode("Vim_ydc_d"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_ydc_d"))
 d::
   VimLineCopy := 1
   if WinActive("ahk_group DoubleHome"){
@@ -477,7 +477,7 @@ d::
   }
 Return
 
-#If InActiveWindow() and (isCurrentVimMode("Vim_ydc_c"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_ydc_c"))
 c::
   VimLineCopy := 1
   if WinActive("ahk_group DoubleHome"){
@@ -491,13 +491,13 @@ c::
   }
 Return
 
-#If InActiveWindow() and (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_Normal"))
 ; X
 x::Send, {Delete}
 +x::Send, {BS}
 
 ; Paste
-#If InActiveWindow() and (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_Normal"))
 p::
   ;i:=0
   ;;Send, {p Up}
@@ -551,7 +551,7 @@ Return
 ; Vim visual mode {{{
 
 ; Visual Char/Block/Line
-#If InActiveWindow() and (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_Normal"))
 v::VimSetMode("Vim_VisualChar")
 ^v::
   Send, ^b
@@ -564,7 +564,7 @@ Return
 Return
 
 ; ydc
-#If InActiveWindow() and (strIsInCurrentVimMode("Visual"))
+#If (InActiveWindow()) and (strIsInCurrentVimMode("Visual"))
 y::
   Clipboard :=
   Send, ^c
@@ -632,7 +632,7 @@ Return
 ; }}} Vim visual mode
 
 ; Search {{{
-#If InActiveWindow() and (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_Normal"))
 /::
   Send, ^f
   VimSetMode("Insert")
@@ -654,10 +654,10 @@ n::Send, {F3}
 ; }}} Search
 
 ; Vim comamnd mode {{{
-#If InActiveWindow() and (isCurrentVimMode("Vim_Normal"))
+#If (InActiveWindow()) and (isCurrentVimMode("Vim_Normal"))
 :::VimSetMode("Command") ;(:)
 `;::VimSetMode("Command") ;(;)
-#If InActiveWindow() and (isCurrentVimMode("Command"))
+#If (InActiveWindow()) and (isCurrentVimMode("Command"))
 w::VimSetMode("Command_w")
 q::VimSetMode("Command_q")
 h::
@@ -665,7 +665,7 @@ h::
   VimSetMode("Vim_Normal")
 Return
 
-#If InActiveWindow() and (isCurrentVimMode("Command_w"))
+#If (InActiveWindow()) and (isCurrentVimMode("Command_w"))
 Return::
   Send, ^s
   VimSetMode("Vim_Normal")
@@ -682,7 +682,7 @@ Space::
   VimSetMode("Insert")
 Return
 
-#If InActiveWindow() and (isCurrentVimMode("Command_q"))
+#If (InActiveWindow()) and (isCurrentVimMode("Command_q"))
 Return::
   Send, !{F4}
   VimSetMode("Insert")
@@ -690,7 +690,7 @@ Return
 ; }}} Vim command mode
 
 ; Disable other keys {{{
-#If InActiveWindow() and (strIsInCurrentVimMode("ydc") or strIsInCurrentVimMode("Command") or (isCurrentVimMode("Z")))
+#If (InActiveWindow()) and (strIsInCurrentVimMode("ydc") or strIsInCurrentVimMode("Command") or (isCurrentVimMode("Z")))
 *a::
 *b::
 *c::
@@ -761,7 +761,7 @@ Space::
   VimSetMode("Vim_Normal")
 Return
 
-#If InActiveWindow() and strIsInCurrentVimMode("Vim_") and (VimDisableUnused == 2)
+#If (InActiveWindow()) and strIsInCurrentVimMode("Vim_") and (VimDisableUnused == 2)
 a::
 b::
 c::
@@ -857,7 +857,7 @@ _::
 Space::
 Return
 
-#If InActiveWindow() and strIsInCurrentVimMode("Vim_") and (VimDisableUnused == 3)
+#If (InActiveWindow()) and strIsInCurrentVimMode("Vim_") and (VimDisableUnused == 3)
 *a::
 *b::
 *c::

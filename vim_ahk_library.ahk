@@ -195,11 +195,14 @@ VimWriteIni(){
   IniWrite, % VimVerbose, % VimIni, % VimSection, VimVerbose
 }
 
-InActiveWindow(){
-  if WinActive("ahk_group " . VimGroupName) or (AllowOverrideNormal == 1 and !WinActive(vim))
+InActiveWindow(ignoreOverride:=false){
+  global AllowOverrideNormal
+  ; if (WinActive("ahk_group " . VimGroupName)) or (AllowOverrideNormal == 1 and !WinActive(vim) and not ignoreOverride) {
+  if (WinActive("ahk_group VimGroup1")) or (AllowOverrideNormal == 1 and !WinActive(vim) and not ignoreOverride) {
     return true
-  else
+  }else{
     return false
+  }
 }
 
 VimSetGuiOffset(offset=0){
@@ -209,8 +212,11 @@ VimSetGuiOffset(offset=0){
 }
 
 VimStatusCheckTimer:
-  if WinActive("ahk_group " . VimGroupName)
+global AllowOverrideNormal
+  if (InActiveWindow(true))
   {
+    VimSetIcon(VimMode)
+  }else if (AllowOverrideNormal == 1) and isCurrentVimMode("Vim_Normal"){
     VimSetIcon(VimMode)
   }else{
     VimSetIcon("Disabled")
