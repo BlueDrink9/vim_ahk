@@ -194,6 +194,13 @@ VimWriteIni(){
   IniWrite, % VimVerbose, % VimIni, % VimSection, VimVerbose
 }
 
+InActiveWindow(){
+  if WinActive("ahk_group " . VimGroupName) or (AllowOverrideNormal == 1 and !WinActive(vim))
+    return true
+  else
+    return false
+}
+
 VimSetGuiOffset(offset=0){
   VimGuiAbout := offset + 1
   VimGuiSettings := offset + 2

@@ -49,15 +49,6 @@ Esc:: ; Just send Esc at converting, long press for normal Esc (depending on opt
   }
 Return
 
-^[:: ; Go to Normal mode (for vim) with IME off even at converting.
-  KeyWait, [, T0.5
-  if(ErrorLevel){ ; long press to Esc
-    Send, {Esc}
-    Return
-  }
-  checkIMENormal()
-Return
-
 ; Set normal-mode hotkeys to high priority, so they can interrupt any other thread.
 hotkey,Esc,,P50
 hotkey,^],,P50
@@ -75,6 +66,17 @@ checkIMENormal(){
     VimSetMode("Vim_Normal")
   }
 }
+
+#If WinActive("ahk_group " . VimGroupName)
+^[:: ; Go to Normal mode (for vim) with IME off even at converting.
+  KeyWait, [, T0.5
+  if(ErrorLevel){ ; long press to Esc
+    Send, {Esc}
+    Return
+  }
+  checkIMENormal()
+Return
+
 
 #If WinActive("ahk_group " . VimGroupName) and (isCurrentVimMode("Insert"))
 ~k::
@@ -159,7 +161,7 @@ Return
 ; }}}
 
 ; Repeat {{{
-#If WinActive("ahk_group " . VimGroupName) and (strIsInCurrentVimMode("Vim_"))
+#If InActiveWindow() and (strIsInCurrentVimMode("Vim_"))
 1::
 2::
 3::

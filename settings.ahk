@@ -109,6 +109,11 @@ settings.push({name: "VimKV"
 , descriptionShort: "kv enters Normal mode"
 , descriptionLong: "Asign kv to enter Normal mode."})
 
+settings.push({name: "AllowOverrideNormal"
+, default: 0
+, descriptionShort: "Allow normal-mode override with ^["
+, descriptionLong: "^[ will enter normal mode regardless of current application (except vim)"})
+
 ; Set 1 to make holding esc enter normal mode and single press send through esc
 settings.push({name: "VimLongEscNormal"
 , default: 0
