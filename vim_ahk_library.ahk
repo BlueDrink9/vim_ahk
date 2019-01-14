@@ -40,7 +40,7 @@ VimSetIcon(Mode=""){
   }
 }
 
-checkValidMode(mode, full_match = true){
+checkValidMode(mode, full_match := true){
   Global possibleVimModes
   try {
     inOrBlank:= (not full_match) ? "in " : ""
@@ -48,7 +48,7 @@ checkValidMode(mode, full_match = true){
       throw Exception("Invalid mode specified",-2,
       ( Join
 "'" mode "' is not " inOrBlank "a valid mode as defined by the possibleVimModes
- array at the top of vim_ahk_library. This may be a typo.
+ array at the top of vim.ahk. This may be a typo.
  Fix this error by using an existing mode,
  or adding your mode to the array.")
       )
@@ -92,6 +92,7 @@ VimSetMode(Mode="", g=0, n=0, LineCopy=-1){
 
 isCurrentVimMode(mode){
   global VimMode
+  global warn
   if warn {
     checkValidMode(mode)
   }
