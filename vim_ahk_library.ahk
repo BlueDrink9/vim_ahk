@@ -211,8 +211,21 @@ VimSetGuiOffset(offset=0){
   VimGuiVerbose := offset + 3
 }
 
+VimResetStatusOnWindowChange(){
+  global previousWindow
+  if !WinActive("ahk_id" . previousWindow){
+    if not isCurrentVimMode("Insert"){
+      VimSetMode("Insert")
+    }
+    WinGet, previousWindow,,A
+  }
+}
+
 VimStatusCheckTimer:
-global AllowOverrideNormal
+  global AllowOverrideNormal
+  if (AllowOverrideNormal == 1){
+    VimResetStatusOnWindowChange()
+  }
   if (InActiveWindow(true))
   {
     VimSetIcon(VimMode)

@@ -35,6 +35,7 @@ VimIniDir := % A_AppData . "\AutoHotkey"
 VimIni := % VimIniDir . "\vim_ahk.ini"
 
 VimSection := "Vim Ahk Settings"
+WinGet, previousWindow,,A
 
 ; Icon places
 VimIconNormal := % A_LineFile . "\..\icons\normal.ico"
