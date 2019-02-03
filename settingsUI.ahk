@@ -31,11 +31,11 @@ MenuVimStatus:
 Return
 
 MenuVimSettings:
-  global boxCreated
+  global VimCheckboxesCreated
   Gui, VimGuiSettings:+LabelVimGuiSettings
   Gui, VimGuiSettings:-MinimizeBox
   Gui, VimGuiSettings:-Resize
-  boxCreated=false
+  VimCheckboxesCreated=false
   for i, s in settings {
     ; if (s["type"] = "checkbox"){
       addCheckbox(s["name"], s["default"], s["descriptionShort"], s["descriptionLong"])

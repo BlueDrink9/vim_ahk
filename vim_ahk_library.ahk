@@ -293,13 +293,13 @@ addSetting(name, defaultVal, descriptionShort, descriptionLong, type="checkbox")
 }
 
 addCheckbox(name, defaultVal, descriptionShort, descriptionLong){
-  global boxCreated
+  global VimCheckboxesCreated
   global settings
   checkboxRows := settings.Length() + 1
-  if boxCreated=false
+  if VimCheckboxesCreated=false
   {
   Gui, VimGuiSettings:Add, GroupBox, w320 R%checkboxRows% Section, Settings
-  boxCreated=true
+  VimCheckboxesCreated=true
   }
 
   Gui, VimGuiSettings:Add, Checkbox, xs+10 yp+20 v%name%, %descriptionShort%

@@ -87,48 +87,48 @@ GroupAdd, VimDoubleHomeGroup, ahk_exe Code.exe ; Visual Studio Code
 ; Setting variables {{{
 
 ; If IME status is restored or not at entering insert mode. 1 for restoring. 0 for not to restore (always IME off at enterng insert mode).
-settings := [{name: "VimRestoreIME"
+VimCheckboxes := [{name: "VimRestoreIME"
 , default: 1
 , descriptionLong: "Restore IME status at entering Insert mode"
 , descriptionShort: "Restore IME status at entering Insert mode."}]
 
-; Set 1 to asign jj to enter Normal mode
-settings.push({name: "VimJJ"
+; Set 1 to assign jj to enter Normal mode
+VimCheckboxes.push({name: "VimJJ"
 , default: 0
 , descriptionShort: "jj enters Normal mode"
-, descriptionLong: "Asign jj to enter Normal mode."})
+, descriptionLong: "Assign jj to enter Normal mode."})
 
-; Set 1 to asign jk to enter Normal mode
-settings.push({name: "VimJK"
+; Set 1 to assign jk to enter Normal mode
+VimCheckboxes.push({name: "VimJK"
 , default: 0
 , descriptionShort: "jk enters Normal mode"
-, descriptionLong: "Asign jk to enter Normal mode."})
+, descriptionLong: "Assign jk to enter Normal mode."})
 
-; Set 1 to asign kv to enter Normal mode
-settings.push({name: "VimKV"
+; Set 1 to assign kv to enter Normal mode
+VimCheckboxes.push({name: "VimKV"
 , default: 0
 , descriptionShort: "kv enters Normal mode"
-, descriptionLong: "Asign kv to enter Normal mode."})
+, descriptionLong: "Assign kv to enter Normal mode."})
 
-settings.push({name: "AllowOverrideNormal"
+VimCheckboxes.push({name: "AllowOverrideNormal"
 , default: 0
 , descriptionShort: "Allow normal-mode override with ^["
 , descriptionLong: "^[ will enter normal mode regardless of current application (except vim)"})
 
 ; Set 1 to make holding esc enter normal mode and single press send through esc
-settings.push({name: "VimLongEscNormal"
+VimCheckboxes.push({name: "VimLongEscNormal"
 , default: 0
 , descriptionShort: "Long press esc to enter normal mode"
 , descriptionLong: "Hold esc to enter normal, single press to send esc to window."})
 
 ; Set 1 to enable Tray Icon for Vim Modes`nSet 0 for original Icon
-settings.push({name: "VimIcon"
+VimCheckboxes.push({name: "VimIcon"
 , default: 1
 , descriptionShort: "Enable tray icon"
 , descriptionLong: "Enable tray icon for Vim Modes."})
 
 ; Set 1 to enable Tray Icon check
-settings.push({name: "VimIconCheck"
+VimCheckboxes.push({name: "VimIconCheck"
 , default: 1
 , descriptionShort: "Enable tray icon check"
 , descriptionLong: "Enable tray icon check."})
