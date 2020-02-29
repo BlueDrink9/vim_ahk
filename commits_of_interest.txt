@@ -1,0 +1,11 @@
+c70a462 change if to use func
+6ee9757 func to override to normal mode
+bcc66c6 - Replace "replace" method with function. Smaller, tider, no reuse, slower
+ 8d64e4b - Reduce some huge code duplication in replace function
+26142c8 - don't use long-press escape if testing
+88ca1aa - Fix typo, including in search, # and *
+
+a9a7527 - Fix multithread bug with jk/kv (1 year, 7 months ago) <Bluedrink9>
+* 8944f5b - Fix #7 bug with expectSingleLetter
+ 3ee99eb - Add option for swapping long/short press esc funciton (1 year, 7 months ago) <bluedrink9>
+ 318f9cb - Add option for swapping long/short press esc funciton
